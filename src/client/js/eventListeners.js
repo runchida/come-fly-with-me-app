@@ -10,4 +10,7 @@ export function onSubmit(event) {
         const tripInfo = { location: document.getElementById('location').textContent, date: document.getElementById('date') }
         Client.postInfo('/takeoff', tripInfo)
     }
+    else {
+        document.getElementById('result').innerHTML = 'Tell me when, tell me where!'
+    }
 }
