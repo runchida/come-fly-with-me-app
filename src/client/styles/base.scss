@@ -1,4 +1,16 @@
+$primary-color: #84989c;
+$secondary-color:  #a4b7ba;
+
 body {
-    background: #b5feff;
-    color: #fff;
+    background: #fff;
+    color: $secondary-color;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+}
+
+#travelForm {
+    margin: auto;
+    align-items: center;
+    width: 70%;
 }

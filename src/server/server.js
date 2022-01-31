@@ -3,6 +3,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
 const axios = require('axios')
+// import {} from ('./apiCallers')
 dotenv.config();
 
 // setup express server
@@ -18,4 +19,8 @@ app.listen(port, () => {
 
 app.get('/', (req, res) => {
     res.sendFile('/dist/index.html', { root: __dirname + '/../..' })
+})
+
+app.post('/takeoff', (req, res) => {
+    res.send({status: "Server responded"})
 })

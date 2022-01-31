@@ -2,9 +2,17 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>I'm sentimental</title>
+        <title>Fly, fly, fly</title>
     </head>
     <body>
         <h1>Come fly with me</h1>
+        <form id="travelForm">
+            <label for="location">Where?</label>
+            <input id="location" type="text" placeholder="Wherever" required />
+            <label for="location">When?</label>
+            <input id="date" type="datetime" required />
+            <button id="travelButton">Let's go</button>
+        </form>
+        <div id="result"></div>
     </body>
 </html>

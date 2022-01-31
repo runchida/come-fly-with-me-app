@@ -2,6 +2,8 @@
 import './styles/base.scss'
 
 // import js
-import './js/app'
+import { onSubmit } from './js/eventListeners'
+import { postInfo } from './js/serverAPI'
 
 console.log('indox.js loaded')
+export { onSubmit, postInfo }
