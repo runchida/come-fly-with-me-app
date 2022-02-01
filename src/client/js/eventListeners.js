@@ -7,7 +7,8 @@ window.addEventListener('load', () => {
 export function onSubmit(event) {
     event.preventDefault();
     if (document.getElementById('travelForm').checkValidity()) {
-        const tripInfo = { location: document.getElementById('location').textContent, date: document.getElementById('date') }
+        const tripInfo = { location: document.getElementById('location').value, date: document.getElementById('date').value }
+        console.log(tripInfo)
         Client.postInfo('/takeoff', tripInfo)
     }
     else {
