@@ -39,36 +39,39 @@ async function onPost(req, res) {
         console.log(coord)
 
         // get weather info with coords
-        if (timeToTrip < 7) {
-            let weatherFor = 'current'
-            const resWeather = await getWeather(weatherFor, coord)
+        const resWeather = await getWeather(timeToTrip, coord)
+        try {
+            // process weather data
+            console.log('Weather API called')
+            console.log(resWeather.data)
+            if (timeToTrip < 7) {
+
+            }
+            else {
+
+            }
+
+            // get picture with city name
+            const resPixa = await getPicture(tripInfo)
             try {
-                console.log('Calling Weather API')
-                console.log(resWeather.data)
+                console.log('Pixabay called')
+                console.log(resPixa.data)
             }
             catch (error) {
-                console.log('Problem connecting to weather API')
+                console.log('Problem connecting to Pixabay')
                 console.log(error)
             }
         }
-        else {
-            let weatherFor = 'forecast/daily'
-            const resWeather = await getWeather(weatherFor, coord)
-            try {
-                console.log('Calling Weather API')
-                console.log(resWeather.data)
-            }
-            catch (error) {
-                console.log('Problem connecting to weather API')
-                console.log(error)
-            }
+        catch (error) {
+            console.log('Problem connecting to weather API')
+            console.log(error)
         }
     }
+
     catch (error) {
         console.log('Problem connecting to Geo API')
         console.log(error)
     }
-
 }
 
 // API caller functions
@@ -80,7 +83,11 @@ async function getLocation(tripInfo) {
     return await axios.get(baseUrl + cityName)
 }
 
-async function getWeather(weatherFor, coord) {
+async function getWeather(timeToTrip, coord) {
+    let weatherFor = 'forecast/daily'
+    if (timeToTrip < 7) {
+        weatherFor = 'current'
+    }
     const baseUrl = `https://api.weatherbit.io/v2.0/${weatherFor}?key=${process.env.WEATHER_KEY}&`
     const unit = "units=M&"
     console.log(coord)
@@ -89,8 +96,10 @@ async function getWeather(weatherFor, coord) {
 }
 
 async function getPicture(tripInfo) {
-    const baseUrl = "https://pixabay.com/api/"
-    // get
+    const baseUrl = `https://pixabay.com/api?key=${process.env.PIXA_KEY}&`
+    const cityName = `q=${tripInfo.location}&`
+    const params = `editors_choice=true&orientation=wide&min_width=600`
+    return await axios.get(baseUrl + cityName + params)
 }
 
 // get days until trip
