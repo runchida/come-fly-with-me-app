@@ -46,13 +46,13 @@ async function onPost(req, res) {
             // process weather data
             console.log('Weather API called')
             if (daysToTrip < 7) {
-
+                Object.assign(tripData, { weather: resWeather.data.data[0] })
             }
             else {
-
+                Object.assign(tripData, { weather: resWeather.data.data})
             }
             console.log(resWeather.data.data[0])
-            Object.assign(tripData, { weather: resWeather.data.data[0] })
+            
 
             // get picture with city name
             const resPixa = await getPicture(tripInfo)

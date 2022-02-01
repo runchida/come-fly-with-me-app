@@ -5,17 +5,19 @@
     width: 80%;
 }
 
-#weatherDiv {
+.weatherDiv {
     display: flex;
     flex-direction: row;
+    gap: 3px;
 }
 
-#picDiv {
+.picDiv {
     display: grid;
     grid-template-areas:
     "p1 p1 p1 p1"
     "p2 p2 p3 p3";
     gap: 2px 2px;
+    width: 100%;
 }
 
 #pic1 {

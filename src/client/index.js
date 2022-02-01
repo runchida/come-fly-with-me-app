@@ -1,5 +1,6 @@
 // import styles
 import './styles/base.scss'
+import './styles/result.scss'
 
 // import js
 import { onSubmit } from './js/eventListeners'

@@ -1,8 +1,9 @@
 $primary-color: #84989c;
 $secondary-color:  #a4b7ba;
+$background-color: #fff;
 
 body {
-    background: #fff;
+    background: $background-color;
     color: $secondary-color;
     align-items: center;
     margin: auto;
@@ -15,3 +16,21 @@ body {
     width: 70%;
 }
 
+button {
+    background: $background-color;
+    color: $secondary-color;
+}
+
+#travelButton:hover {
+    background: $primary-color;
+    color: $background-color;
+}
+
+input {
+    background: $background-color;
+    color: $primary-color;
+}
+
+input:hover {
+    border-color: $secondary-color;
+}
