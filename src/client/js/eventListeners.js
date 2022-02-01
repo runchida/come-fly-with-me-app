@@ -5,6 +5,7 @@ window.addEventListener('load', () => {
     document.getElementById('travelForm').addEventListener('submit', onSubmit)
     document.getElementById('travelButton').addEventListener('click', onSubmit)
     document.getElementById('date').setAttribute('min', todayDate)
+    document.getElementById('endDate').setAttribute('min', todayDate)
     console.log('Event listeners added')
 
 })
@@ -12,7 +13,10 @@ window.addEventListener('load', () => {
 export function onSubmit(event) {
     event.preventDefault();
     if (document.getElementById('travelForm').checkValidity()) {
-        const tripInfo = { location: document.getElementById('location').value, date: document.getElementById('date').value, todayDate: document.getElementById('date').min }
+        const tripInfo = {
+            location: document.getElementById('location').value, date: document.getElementById('date').value,
+            todayDate: document.getElementById('date').min, endDate: document.getElementById('endDate').value
+        }
         console.log(tripInfo)
         Client.postInfo('/takeoff', tripInfo)
     }

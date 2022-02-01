@@ -29,9 +29,12 @@ app.post('/takeoff', onPost)
 
 async function onPost(req, res) {
     const tripInfo = req.body
-    daysToTrip = getDaysToTrip(req.body.date)
-    Object.assign(tripData, {city: tripInfo.location})
-    Object.assign(tripData, {daysToTrip: daysToTrip})
+    // daysToTrip = getDaysToTrip(req.body.date)
+    daysToTrip = getDaysleft('today', req.body.date)
+    const tripInDays = getDaysleft(req.body.date, req.body.endDate)
+    Object.assign(tripData, { city: tripInfo.location })
+    Object.assign(tripData, { daysToTrip: daysToTrip })
+    Object.assign(tripData, { tripInDays: tripInDays })
 
     let coord = ''
     const resGeo = await getLocation(tripInfo)
@@ -49,10 +52,10 @@ async function onPost(req, res) {
                 Object.assign(tripData, { weather: resWeather.data.data[0] })
             }
             else {
-                Object.assign(tripData, { weather: resWeather.data.data})
+                Object.assign(tripData, { weather: resWeather.data.data })
             }
             console.log(resWeather.data.data[0])
-            
+
 
             // get picture with city name
             const resPixa = await getPicture(tripInfo)
@@ -106,14 +109,34 @@ async function getPicture(tripInfo) {
 }
 
 // get days until trip
-function getDaysToTrip(tripDate) {
-    const todayDate = (() => {
-        const todayTime = new Date()
-        return new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate())
-    })()
-    const splitDate = tripDate.split('-')
-    const planDate = new Date(splitDate[0], splitDate[1] - 1, splitDate[2])
-    const diff = planDate - todayDate
-    console.log('frontend:' + tripDate)
+// function getDaysToTrip(tripDate) {
+//     const todayDate = (() => {
+//         const todayTime = new Date()
+//         return new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate())
+//     })()
+//     const splitDate = tripDate.split('-')
+//     const planDate = new Date(splitDate[0], splitDate[1] - 1, splitDate[2])
+//     const diff = planDate - todayDate
+//     console.log('frontend:' + tripDate)
+//     return Math.floor((diff / 3600 / 24 / 1000))
+// }
+
+function getDaysleft(startDate, endDate) {
+    let newStartDate;
+    // case differentiation for today or other date
+    if (startDate = 'today') {
+        newStartDate = (() => {
+            const todayTime = new Date()
+            return new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate())
+        })()
+    }
+    else {
+        const startTemp = startDate.split('-')
+        newStartDate = new Date(startTemp[0], startTemp[1] - 1, startTemp[2])
+    }
+
+    const endTemp = endDate.split('-')
+    const newEndDate = new Date(endTemp[0], endTemp[1] - 1, endTemp[2])
+    const diff = newEndDate - newStartDate
     return Math.floor((diff / 3600 / 24 / 1000))
 }

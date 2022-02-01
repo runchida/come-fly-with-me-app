@@ -1,15 +1,17 @@
-import { forEachMatchingSheetRuleOfElement } from "jsdom/lib/jsdom/living/helpers/style-rules"
-
 export function updateResult(data) {
     const docFrag = document.createDocumentFragment()
     const weatherDiv = document.createElement('div', { "id": 'weatherDiv' })
     const picDiv = document.createElement('div', { "id": 'picDiv' })
     const result = document.getElementById('result')
+    result.innerHTML = ''
 
     console.log(data)
     // add weather Info
-    console.log(data.daysToTrip)
     weatherDiv.setAttribute("class", "weatherDiv")
+
+    const countdownDiv = document.createElement('div', { "id": "countdown" })
+    countdownDiv.innerHTML = `Your dream will last ${data.tripInDays} days`
+
     if (data.daysToTrip < 7) {
         weatherDiv.innerHTML =
             `<div>Today's weather in ${data.city}</div>
@@ -44,7 +46,7 @@ export function updateResult(data) {
         picDiv.appendChild(pic)
         if (i == 2) break;
     }
-
+    docFrag.appendChild(countdownDiv)
     docFrag.appendChild(weatherDiv)
     docFrag.appendChild(picDiv)
     result.appendChild(docFrag)

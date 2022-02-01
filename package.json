@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "main": "index.js",
     "scripts": {
-        "test": "jest",
+        "test": "jest --forceExit",
         "start": "node src/server/server.js",
         "start-dev": "webpack-dev-server --config webpack.dev.js --open",
         "build-dev": "webpack --config webpack.dev.js",
