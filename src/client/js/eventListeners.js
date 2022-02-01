@@ -4,6 +4,7 @@ console.log(todayDate)
 window.addEventListener('load', () => {
     document.getElementById('travelForm').addEventListener('submit', onSubmit)
     document.getElementById('travelButton').addEventListener('click', onSubmit)
+    document.getElementById('resetButton').addEventListener('click', Client.resetResult)
     document.getElementById('date').setAttribute('min', todayDate)
     document.getElementById('endDate').setAttribute('min', todayDate)
     console.log('Event listeners added')

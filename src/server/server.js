@@ -29,7 +29,6 @@ app.post('/takeoff', onPost)
 
 async function onPost(req, res) {
     const tripInfo = req.body
-    // daysToTrip = getDaysToTrip(req.body.date)
     daysToTrip = getDaysleft('today', req.body.date)
     const tripInDays = getDaysleft(req.body.date, req.body.endDate)
     Object.assign(tripData, { city: tripInfo.location })
@@ -54,8 +53,6 @@ async function onPost(req, res) {
             else {
                 Object.assign(tripData, { weather: resWeather.data.data })
             }
-            console.log(resWeather.data.data[0])
-
 
             // get picture with city name
             const resPixa = await getPicture(tripInfo)
@@ -108,23 +105,10 @@ async function getPicture(tripInfo) {
     return await axios.get(baseUrl + cityName + params)
 }
 
-// get days until trip
-// function getDaysToTrip(tripDate) {
-//     const todayDate = (() => {
-//         const todayTime = new Date()
-//         return new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate())
-//     })()
-//     const splitDate = tripDate.split('-')
-//     const planDate = new Date(splitDate[0], splitDate[1] - 1, splitDate[2])
-//     const diff = planDate - todayDate
-//     console.log('frontend:' + tripDate)
-//     return Math.floor((diff / 3600 / 24 / 1000))
-// }
-
 function getDaysleft(startDate, endDate) {
     let newStartDate;
     // case differentiation for today or other date
-    if (startDate = 'today') {
+    if (startDate == 'today') {
         newStartDate = (() => {
             const todayTime = new Date()
             return new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate())

@@ -21,10 +21,10 @@ export function updateResult(data) {
     }
     else {
         let forecastBegin = data.daysToTrip;
-        if (data.daysToTrip > 14) {
-            forecastBegin = 12
+        if (data.daysToTrip > 16) {
+            forecastBegin = 13
         }
-        for (let i = forecastBegin - 1; i < forecastBegin + 2; i++) {
+        for (let i = forecastBegin; i < forecastBegin + 3; i++) {
             const forecast = document.createElement("div")
             forecast.setAttribute("class", "forecast")
             forecast.innerHTML =
@@ -50,4 +50,10 @@ export function updateResult(data) {
     docFrag.appendChild(weatherDiv)
     docFrag.appendChild(picDiv)
     result.appendChild(docFrag)
+}
+
+export function resetResult(event) {
+    event.preventDefault()
+    const result = document.getElementById('result')
+    result.innerHTML = ''
 }
