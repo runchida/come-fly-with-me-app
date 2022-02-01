@@ -1,0 +1,31 @@
+#result {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 80%;
+}
+
+#weatherDiv {
+    display: flex;
+    flex-direction: row;
+}
+
+#picDiv {
+    display: grid;
+    grid-template-areas:
+    "p1 p1 p1 p1"
+    "p2 p2 p3 p3";
+    gap: 2px 2px;
+}
+
+#pic1 {
+    grid-area: p1;
+}
+
+#pic2 {
+    grid-area: p2;
+}
+
+#pic2 {
+    grid-area: p2;
+}

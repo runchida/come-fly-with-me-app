@@ -14,7 +14,8 @@ app.use(express.static(__dirname + '/../../dist/'))
 app.use(bodyParser.json())
 
 // server data
-let timeToTrip;
+let daysToTrip;
+let tripData = {};
 
 app.listen(port, () => {
     console.log('Server running on port: ' + port)
@@ -27,35 +28,38 @@ app.get('/', (req, res) => {
 app.post('/takeoff', onPost)
 
 async function onPost(req, res) {
-    res.send({ request: req.body })
     const tripInfo = req.body
-    timeToTrip = getTimeToTrip(req.body.date)
+    daysToTrip = getDaysToTrip(req.body.date)
+    Object.assign(tripData, {city: tripInfo.location})
+    Object.assign(tripData, {daysToTrip: daysToTrip})
 
     let coord = ''
     const resGeo = await getLocation(tripInfo)
     try {
+        console.log('Geo called')
         const geoJson = JSON.parse(xml2js.toJson(resGeo.data))
         coord = { lat: geoJson.geonames.code[0].lat, lng: geoJson.geonames.code[0].lng }
-        console.log(coord)
 
         // get weather info with coords
-        const resWeather = await getWeather(timeToTrip, coord)
+        const resWeather = await getWeather(daysToTrip, coord)
         try {
             // process weather data
             console.log('Weather API called')
-            console.log(resWeather.data)
-            if (timeToTrip < 7) {
+            if (daysToTrip < 7) {
 
             }
             else {
 
             }
+            console.log(resWeather.data.data[0])
+            Object.assign(tripData, { weather: resWeather.data.data[0] })
 
             // get picture with city name
             const resPixa = await getPicture(tripInfo)
             try {
                 console.log('Pixabay called')
-                console.log(resPixa.data)
+                Object.assign(tripData, { pics: resPixa.data })
+                res.send(tripData)
             }
             catch (error) {
                 console.log('Problem connecting to Pixabay')
@@ -83,14 +87,13 @@ async function getLocation(tripInfo) {
     return await axios.get(baseUrl + cityName)
 }
 
-async function getWeather(timeToTrip, coord) {
+async function getWeather(daysToTrip, coord) {
     let weatherFor = 'forecast/daily'
-    if (timeToTrip < 7) {
+    if (daysToTrip < 7) {
         weatherFor = 'current'
     }
     const baseUrl = `https://api.weatherbit.io/v2.0/${weatherFor}?key=${process.env.WEATHER_KEY}&`
     const unit = "units=M&"
-    console.log(coord)
     const coordParam = `lat=${coord.lat}&lon=${coord.lng}`
     return await axios.get(baseUrl + unit + coordParam)
 }
@@ -98,12 +101,12 @@ async function getWeather(timeToTrip, coord) {
 async function getPicture(tripInfo) {
     const baseUrl = `https://pixabay.com/api?key=${process.env.PIXA_KEY}&`
     const cityName = `q=${tripInfo.location}&`
-    const params = `editors_choice=true&orientation=wide&min_width=600`
+    const params = `editors_choice=true&orientation=wide&min_width=600&page=1&per_page=5`
     return await axios.get(baseUrl + cityName + params)
 }
 
 // get days until trip
-function getTimeToTrip(tripDate) {
+function getDaysToTrip(tripDate) {
     const todayDate = (() => {
         const todayTime = new Date()
         return new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate())
