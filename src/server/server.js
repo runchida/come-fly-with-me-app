@@ -30,19 +30,45 @@ async function onPost(req, res) {
     res.send({ request: req.body })
     const tripInfo = req.body
     timeToTrip = getTimeToTrip(req.body.date)
-    console.log(timeToTrip)
 
-    // const resGeo = await getLocation(tripInfo)
-    // try {
-    //     // console.log(resGeo.data)
-    //     const geoJson = JSON.parse(xml2js.toJson(resGeo.data))
-    //     const coord = { lat: geoJson.geonames.code[0].lat, lng: geoJson.geonames.code[0].lng }
-    //     console.log(coord)
-    // }
-    // catch (error) {
-    //     console.log('Problem connecting to API')
-    //     console.log(error)
-    // }
+    let coord = ''
+    const resGeo = await getLocation(tripInfo)
+    try {
+        const geoJson = JSON.parse(xml2js.toJson(resGeo.data))
+        coord = { lat: geoJson.geonames.code[0].lat, lng: geoJson.geonames.code[0].lng }
+        console.log(coord)
+
+        // get weather info with coords
+        if (timeToTrip < 7) {
+            let weatherFor = 'current'
+            const resWeather = await getWeather(weatherFor, coord)
+            try {
+                console.log('Calling Weather API')
+                console.log(resWeather.data)
+            }
+            catch (error) {
+                console.log('Problem connecting to weather API')
+                console.log(error)
+            }
+        }
+        else {
+            let weatherFor = 'forecast/daily'
+            const resWeather = await getWeather(weatherFor, coord)
+            try {
+                console.log('Calling Weather API')
+                console.log(resWeather.data)
+            }
+            catch (error) {
+                console.log('Problem connecting to weather API')
+                console.log(error)
+            }
+        }
+    }
+    catch (error) {
+        console.log('Problem connecting to Geo API')
+        console.log(error)
+    }
+
 }
 
 // API caller functions
@@ -54,10 +80,12 @@ async function getLocation(tripInfo) {
     return await axios.get(baseUrl + cityName)
 }
 
-async function getWeather(tripInfo) {
-    const baseUrl = "https://api.weatherbit.io/v2.0/forecast/daily?"
-    const unit = "units=M"
-    // get
+async function getWeather(weatherFor, coord) {
+    const baseUrl = `https://api.weatherbit.io/v2.0/${weatherFor}?key=${process.env.WEATHER_KEY}&`
+    const unit = "units=M&"
+    console.log(coord)
+    const coordParam = `lat=${coord.lat}&lon=${coord.lng}`
+    return await axios.get(baseUrl + unit + coordParam)
 }
 
 async function getPicture(tripInfo) {
@@ -65,7 +93,7 @@ async function getPicture(tripInfo) {
     // get
 }
 
-// helper function for time
+// get days until trip
 function getTimeToTrip(tripDate) {
     const todayDate = (() => {
         const todayTime = new Date()
