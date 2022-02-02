@@ -15,8 +15,8 @@ export function onSubmit(event) {
     event.preventDefault();
     if (document.getElementById('travelForm').checkValidity()) {
         const tripInfo = {
-            location: document.getElementById('location').value, date: document.getElementById('date').value,
-            todayDate: document.getElementById('date').min, endDate: document.getElementById('endDate').value
+            "location": document.getElementById('location').value, "date": document.getElementById('date').value,
+            "todayDate": document.getElementById('date').min, "endDate": document.getElementById('endDate').value
         }
         console.log(tripInfo)
         Client.postInfo('/takeoff', tripInfo)

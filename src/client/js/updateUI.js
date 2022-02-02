@@ -17,7 +17,7 @@ export function updateResult(data) {
             `<div>Today's weather in ${data.city}</div>
             <div>Temperature ${data.weather.temp}</div>
             <div>Feels like ${data.weather.app_temp}</div>
-            <div>Look at the sky and you might see ${data.weather.app_temp}</div>`
+            <div>Look at the sky and you might see ${data.weather.description}</div>`
     }
     else {
         let forecastBegin = data.daysToTrip;
@@ -56,4 +56,10 @@ export function resetResult(event) {
     event.preventDefault()
     const result = document.getElementById('result')
     result.innerHTML = ''
+}
+
+export function updateError() {
+    console.log('Showing error')
+    const result = document.getElementById('result')
+    result.innerHTML = 'Flight canceled :('
 }
